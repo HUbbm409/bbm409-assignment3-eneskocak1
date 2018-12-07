@@ -10,7 +10,7 @@ validation_images, validation_labels = getImageInfo("validation.mat")
 
 weights = np.random.random([5, 768])
 
-
+#try
 print(validation_images.shape)
 NN = neuralnetwork.Neural_Network()
 start = time.time()
