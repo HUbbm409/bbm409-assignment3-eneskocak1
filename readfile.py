@@ -8,6 +8,7 @@ def getImageInfo(filepath):
     imagelist = np.array(images["x"]/255)
     labels =np.array(images["y"][0])
     classes=len(set(labels))
+    print(labels[0])
     labellist=[]
     for i in labels:
         hot = []

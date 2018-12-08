@@ -13,34 +13,39 @@ deneme = np.array([[0,0],
                   [0,1],
                   [1,0],
                   [1,1]])
-print(deneme[0].shape)
-lab= np.array([[0, 1, 0],
-              [0, 0, 1],
-              [1, 0, 0],
-              [0, 1, 0]])
-NN = neuralnetwork.Neural_Network(20,100)
-start = time.time()
-print(NN.W)
-for k in range(1000):
-    count =0
-    cross_entropy_loss = 0
-    for i in range(len(deneme)): # trains the NN 1,000 times
-        image = np.reshape(deneme[i],(len(deneme[i]),1)).T
-        label = np.reshape(lab[i],(len(lab[i]),1)).T
-
-        loss,predcit = NN.train(image, label,0.005)
-
-        """print ("Actual Output:",label.argmax(axis=1) )
-        print ("Predicted Output:" ,predcit)"""
-
-        if label.argmax(axis=1) == predcit:
-            count+=1
-        cross_entropy_loss += loss
+lab= np.array([[1,0],
+              [0,1],
+              [0,1],
+              [0,1]])
 
 
-    print("LOSS",cross_entropy_loss/len(lab))
-    print("hit :",count)
-print(NN.W)
+def nn(epoch,filetype,labeltype,batch):
+    NN = neuralnetwork.Neural_Network(0,10)
+    start = time.time()
+    for k in range(epoch):
+        count =0
+        cross_entropy_loss = 0
+        for i in range(len(filetype)//batch): # trains the NN 1,000 times
+
+            image = filetype[i*batch:((i+1)*batch)-1]
+            label = labeltype[i*batch:((i+1)*batch)-1]
+
+            loss,predcit = NN.train(image, label,0.01)
+
+            """print ("Actual Output:",label.argmax(axis=1) )
+            print ("Predicted Output:" ,predcit)"""
+
+            if np.all(label.argmax(axis=1) == predcit)==True:
+                count+=1
+            cross_entropy_loss += loss
+
+
+        """print("LOSS",cross_entropy_loss/len(lab))
+        print("hit :",count)"""
+
+    print(count)
+
+nn(1000,train_images,train_labels,10)
 """
 layer s=[]
 for i in range(1,599):
