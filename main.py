@@ -19,33 +19,34 @@ lab= np.array([[1,0],
               [0,1]])
 
 
-def nn(epoch,filetype,labeltype,batch):
-    NN = neuralnetwork.Neural_Network(0,10)
+def nn(epoch,filetype,labeltype):
+    NN = neuralnetwork.Neural_Network(1,2)
+    print(NN.W)
     start = time.time()
     for k in range(epoch):
         count =0
         cross_entropy_loss = 0
-        for i in range(len(filetype)//batch): # trains the NN 1,000 times
+        for i in range(1): # trains the NN 1,000 times
+            image = np.reshape(filetype[i],(len(filetype[i]),1)).T
+            label = np.reshape(labeltype[i],(len(labeltype[i]),1)).T
 
-            image = filetype[i*batch:((i+1)*batch)-1]
-            label = labeltype[i*batch:((i+1)*batch)-1]
+            loss,predcit = NN.train(image, label,0.005)
 
-            loss,predcit = NN.train(image, label,0.01)
+            print ("Actual Output:",label.argmax(axis=1) )
+            print ("Predicted Output:" ,predcit)
 
-            """print ("Actual Output:",label.argmax(axis=1) )
-            print ("Predicted Output:" ,predcit)"""
-
-            if np.all(label.argmax(axis=1) == predcit)==True:
+            if label.argmax(axis=1) == predcit:
                 count+=1
+                print("sdda",k)
+                input("s")
             cross_entropy_loss += loss
 
 
         """print("LOSS",cross_entropy_loss/len(lab))
         print("hit :",count)"""
-
+    print(NN.W)
     print(count)
-
-nn(1000,train_images,train_labels,10)
+nn(10000,train_images,train_labels)
 """
 layer s=[]
 for i in range(1,599):
