@@ -27,12 +27,7 @@ def sigmoid_derivative(x):
     return result
 
 
-def softmax_crossentropy(neurons, label):
 
-    label=np.reshape(label,(len(label),1))
-    print(label)
-    print(softmax(neurons))
-    return ((label-softmax(neurons))**2)/2
 
 def backpro(perceptrons,x):
     first = 2*x
