@@ -1,12 +1,12 @@
 import numpy as np
 import math
 from sklearn import datasets
+from readfile import getImageInfo
 
 def relu(X):
-	return np.maximum(X, 0)
-
-def relu_derivative(X):
-	return 1. * (X > 0)
+	return 1/(1+np.exp(-X))
+def relu_derivative(x):
+	return x * (1 - x)
 
 def build_model(X,hidden_nodes,output_dim=5):
     model = {}
@@ -34,6 +34,8 @@ def calculate_loss(model,X,y,reg_lambda):
     # Forward propagation to calculate our predictions
     z1, a1, z2, out = feed_forward(model, X)
     probs = out / np.sum(out, axis=1, keepdims=True)
+
+    input("s")
     # Calculating the loss
     corect_logprobs = -np.log(probs[range(num_examples), y])
     loss = np.sum(corect_logprobs)
@@ -43,9 +45,11 @@ def calculate_loss(model,X,y,reg_lambda):
 
 def backprop(X,y,model,z1,a1,z2,output,reg_lambda):
     delta3 = output
+
     delta3[range(X.shape[0]), y] -= 1  #yhat - y
     dW2 = (a1.T).dot(delta3)
     db2 = np.sum(delta3, axis=0, keepdims=True)
+
     #delta2 = delta3.dot(model['W2'].T) * (1 - np.power(a1, 2)) #if tanh
     delta2 = delta3.dot(model['W2'].T) * relu_derivative(a1) #if ReLU
     dW1 = np.dot(X.T, delta2)
@@ -85,17 +89,20 @@ def train(model, X, y, num_passes=10000, reg_lambda = .1, learning_rate=0.1):
     return model, losses
 
 def main():
-	#toy dataset
-	X, y = datasets.make_moons(16, noise=0.10)
-	num_examples = len(X) # training set size
-	nn_input_dim = 2 # input layer dimensionality
-	nn_output_dim = 2 # output layer dimensionality
-	learning_rate = 0.01 # learning rate for gradient descent
-	reg_lambda = 0.01 # regularization strength
-	model = build_model(X,20,2)
-	model, losses = train(model,X, y, reg_lambda=reg_lambda, learning_rate=learning_rate)
-	output = feed_forward(model, X)
-	preds = np.argmax(output[3], axis=1)
+    #toy dataset
+    X, y = datasets.make_moons(16, noise=0.10)
+
+
+
+    num_examples = len(X) # training set size
+    nn_input_dim = 2 # input layer dimensionality
+    nn_output_dim = 2 # output layer dimensionality
+    learning_rate = 0.01 # learning rate for gradient descent
+    reg_lambda = 0.01 # regularization strength
+    model = build_model(X,20,2)
+    model, losses = train(model,X, y, reg_lambda=reg_lambda, learning_rate=learning_rate)
+    output = feed_forward(model, X)
+    preds = np.argmax(output[3], axis=1)
 
 if __name__ == "__main__":
     main()
