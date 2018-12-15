@@ -7,6 +7,7 @@ class Neural_Network(object):
         #parameters
         self.inputSize = shape1
         self.outputSize = shape2
+
         self.batch= 0
         self.batcherror= np.zeros((shape2,1))
         self.hiddenSize = nodesize
@@ -24,13 +25,14 @@ class Neural_Network(object):
         for i in range(self.layersize+1):
             if i ==0:
                 if layersize !=0:
-                    self.W.append(np.random.normal([self.inputSize, self.hiddenSize])-0.5)# (3x2) weight matrix from input to hidden layer
+                    self.W.append(np.random.random([self.inputSize, self.hiddenSize])-0.5)# (3x2) weight matrix from input to hidden layer
                     self.B.append(np.ones((1,self.hiddenSize)))
 
                 else:
                     self.W.append(np.random.random([self.inputSize,
                                                   self.outputSize])-0.5)  # (3x2) weight matrix from input to hidden layer
                     self.B.append(np.ones((1,self.outputSize)))
+
             elif i == layersize:
                 self.W.append(np.random.random([self.hiddenSize, self.outputSize])-0.5) # (3x1) weight matrix from hidden to output layer
                 self.B.append(np.ones((1,self.outputSize)))
@@ -44,6 +46,7 @@ class Neural_Network(object):
         self.z = X
         self.outsa.append(X)
         for i in range(len(self.W)):
+
             self.z = self.z.dot(self.W[i])
             self.z+= self.B[i]
 

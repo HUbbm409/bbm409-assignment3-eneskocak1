@@ -55,5 +55,7 @@ def nn(filetype,labeltype,get,lsize,nodsize,activation="sigmoid"):
 
     print("Accuracy :",count*100/len(filetype))
     print("hit :", count)
-
-nn(validation_images,validation_labels,True,0,20,activation="relu")
+print("TEST")
+nn(test_images,test_labels,True,2,20,activation="sigmoid")
+print("VAlidation")
+nn(validation_images,validation_labels,True,2,20,activation="sigmoid")

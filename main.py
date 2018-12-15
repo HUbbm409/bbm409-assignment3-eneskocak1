@@ -44,6 +44,7 @@ def nn(epoch,filetype,labeltype,get,lsize,nodsize,activation="sigmoid"):
         count =0
         cross_entropy_loss = 0
         for i in range(len(filetype)): # trains the NN 1,000 times
+
             image = np.reshape(filetype[i],(len(filetype[i]),1)).T
             label = np.reshape(labeltype[i],(len(labeltype[i]),1)).T
 
@@ -62,8 +63,8 @@ def nn(epoch,filetype,labeltype,get,lsize,nodsize,activation="sigmoid"):
         print("epoch:",k)
         print("Accuracy :",count*100/len(filetype))
         print("hit :", count)
-        print(NN.B[lsize])
+
         print("loss:",cross_entropy_loss/len(filetype))
     print(NN.W)
     print(NN.B)
-nn(10000,train_images,train_labels,False,0,20,activation="relu")
+nn(10000,train_images,train_labels,True,2,20,activation="sigmoid")
