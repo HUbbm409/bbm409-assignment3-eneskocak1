@@ -38,17 +38,16 @@ def nn(epoch,filetype,labeltype,get,lsize,nodsize,activation="sigmoid"):
     if get == True:
         NN=getPikle(lsize,nodsize,activation)
     else:
-        NN = neuralnetwork.Neural_Network(lsize,nodsize,activation)
+        NN = neuralnetwork.Neural_Network(lsize,nodsize,activation,filetype.shape[1],labeltype.shape[1])
 
     for k in range(epoch):
         count =0
         cross_entropy_loss = 0
-        enes =np.zeros((5,1))
         for i in range(len(filetype)): # trains the NN 1,000 times
             image = np.reshape(filetype[i],(len(filetype[i]),1)).T
             label = np.reshape(labeltype[i],(len(labeltype[i]),1)).T
 
-            predcit ,loss= NN.train(image, label,0.02,1)
+            predcit ,loss= NN.train(image, label,0.01,1)
             cross_entropy_loss  += loss
             """print ("Actual Output:",label )
             print ("Predicted Output:" ,predcit)"""
@@ -63,7 +62,8 @@ def nn(epoch,filetype,labeltype,get,lsize,nodsize,activation="sigmoid"):
         print("epoch:",k)
         print("Accuracy :",count*100/len(filetype))
         print("hit :", count)
+        print(NN.B[lsize])
         print("loss:",cross_entropy_loss/len(filetype))
     print(NN.W)
     print(NN.B)
-nn(1000,train_images,train_labels,False,0,50,activation="relu")
+nn(10000,train_images,train_labels,False,0,20,activation="relu")

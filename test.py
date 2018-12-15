@@ -56,6 +56,4 @@ def nn(filetype,labeltype,get,lsize,nodsize,activation="sigmoid"):
     print("Accuracy :",count*100/len(filetype))
     print("hit :", count)
 
-while(1):
-    nn(validation_images,validation_labels,True,0,10,activation="relu")
-    time.sleep(3)
+nn(validation_images,validation_labels,True,0,20,activation="relu")

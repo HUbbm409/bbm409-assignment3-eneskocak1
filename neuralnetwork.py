@@ -3,12 +3,12 @@ import numpy as np
 
 
 class Neural_Network(object):
-    def __init__(self,layersize,nodesize,activation):
+    def __init__(self,layersize,nodesize,activation,shape1,shape2):
         #parameters
-        self.inputSize = 768
-        self.outputSize = 5
+        self.inputSize = shape1
+        self.outputSize = shape2
         self.batch= 0
-        self.batcherror= np.zeros((5,1))
+        self.batcherror= np.zeros((shape2,1))
         self.hiddenSize = nodesize
         self.layersize =layersize
         #weights
@@ -24,7 +24,7 @@ class Neural_Network(object):
         for i in range(self.layersize+1):
             if i ==0:
                 if layersize !=0:
-                    self.W.append(np.random.random([self.inputSize, self.hiddenSize])-0.5)# (3x2) weight matrix from input to hidden layer
+                    self.W.append(np.random.normal([self.inputSize, self.hiddenSize])-0.5)# (3x2) weight matrix from input to hidden layer
                     self.B.append(np.ones((1,self.hiddenSize)))
 
                 else:
@@ -55,23 +55,20 @@ class Neural_Network(object):
 
     def sigmoid(self, x):
         # activation funxtion
-        try:
-            e= 1 / (1 + np.exp(-x))
-        except RuntimeWarning as e:
-            print("uyarı",e,x)
+        e= 1 / (1 + np.exp(-x))
         return e
 
     def derivative_sigmoid(self, x):
         # derivative of sigmoid
         return x * (1 - x)
 
-    def backward(self, y,output,alpha):
+    def backward(self,output,alpha):
 
         self.delta = output
 
         self.delta *= alpha
 
-
+        self.delta *= self.activationDerivative(self.outsa[self.layersize+1])
         for i in reversed(range(len(self.W))):
 
 
@@ -100,7 +97,7 @@ class Neural_Network(object):
 
         loss,error=self.cross_entropy(output,y)
         delta=self.delta_cross_entropy(output,y)
-        self.backward(y, delta,rate)
+        self.backward(delta,rate)
 
         return output,loss
 
