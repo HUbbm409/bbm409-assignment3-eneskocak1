@@ -2,7 +2,7 @@ import numpy as np
 import math
 from sklearn import datasets
 from readfile import getImageInfo
-#deneme 123
+
 def relu(X):
 	return 1/(1+np.exp(-X))
 def relu_derivative(x):
