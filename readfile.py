@@ -1,6 +1,6 @@
 from scipy.io import loadmat
 import numpy as np
-import matplotlib.pyplot as plt
+import pickle
 
 def getImageInfo(filepath):
 
@@ -8,7 +8,7 @@ def getImageInfo(filepath):
     imagelist = np.array(images["x"]/255)
     labels =np.array(images["y"][0])
     classes=len(set(labels))
-    print(labels[0])
+
     labellist=[]
     for i in labels:
         hot = []
@@ -23,13 +23,22 @@ def getImageInfo(filepath):
 
 
 
-
-
-    """for i in range(len(imagelist)):
-        image = np.reshape(imagelist[i], (32, 24))
-        plt.imshow(image, cmap=plt.get_cmap('gray'))
-        print(labellist[i])
-        plt.show()
-        input("asd")"""
-
     return imagelist,labellist
+
+
+def getPikle(l,n,active):
+    if l != 0 :
+        with open(active+"_"+str(l)+"layer_"+str(n)+"node"+".pkl", "rb") as inp:
+            NN = pickle.load(inp)
+    else:
+        with open(active+"_singlelayer.pkl", "rb") as inp:
+            NN = pickle.load(inp)
+    return NN
+
+def setPikle(NN,activation):
+    if NN.layersize !=0:
+        with open(activation+"_"+str(NN.layersize)+"layer_"+str(NN.hiddenSize)+"node"+".pkl", "wb") as out:
+            pickle.dump(NN, out, pickle.HIGHEST_PROTOCOL)
+    else:
+        with open(activation+"_singlelayer.pkl", "wb") as out:
+            pickle.dump(NN, out, pickle.HIGHEST_PROTOCOL)

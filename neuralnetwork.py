@@ -7,18 +7,18 @@ class Neural_Network(object):
         #parameters
         self.inputSize = shape1
         self.outputSize = shape2
-
         self.batch= 0
-        self.batcherror= np.zeros((shape2,1))
+        self.batcherror= np.zeros((1,shape2))
         self.hiddenSize = nodesize
         self.layersize =layersize
-        #weights
+
         if activation == "sigmoid":
             self.activationfunc=self.sigmoid
             self.activationDerivative = self.derivative_sigmoid
         elif activation == "relu":
             self.activationfunc = self.ReLU
             self.activationDerivative = self.derivative_Relu
+
         self.W=list()
         self.B=list()
 
@@ -42,6 +42,7 @@ class Neural_Network(object):
 
     def forward(self, X):
         #forward propagation through our network
+
         self.outsa=list()
         self.z = X
         self.outsa.append(X)
@@ -68,18 +69,13 @@ class Neural_Network(object):
     def backward(self,output,alpha):
 
         self.delta = output
-
         self.delta *= alpha
-
         self.delta *= self.activationDerivative(self.outsa[self.layersize+1])
         for i in reversed(range(len(self.W))):
 
-
             self.B[i] += self.delta
             self.o_error = self.outsa[i].T.dot(self.delta)
-
             self.delta = self.delta.dot(self.W[i].T) * self.activationDerivative(self.outsa[i])
-
             self.W[i] += self.o_error
 
     def softmax(self,x):
@@ -97,10 +93,21 @@ class Neural_Network(object):
 
     def train(self, X, y,rate,batchsize):
         output = self.forward(X)
-
-        loss,error=self.cross_entropy(output,y)
+        loss=self.cross_entropy(output,y)
         delta=self.delta_cross_entropy(output,y)
-        self.backward(delta,rate)
+
+        self.batch +=1
+        self.batcherror += delta
+
+        if batchsize == self.batch :
+            self.batcherror /= batchsize
+
+            self.backward(self.batcherror,rate)
+
+
+            self.batch=0
+            self.batcherror[:]=0
+
 
         return output,loss
 
@@ -108,17 +115,12 @@ class Neural_Network(object):
 
     def cross_entropy(self,out,y):
 
-
-
         #E = – ∑ ci . log(pi) + (1 – ci ). log(1 – pi)
         log_likelihood =-((y*np.log10(out) ) + ((1-y) * np.log10(1-out)))
 
-
-        return log_likelihood.sum()/log_likelihood.shape[1],log_likelihood
+        return log_likelihood.sum()
 
     def delta_cross_entropy(self,soft, y):
-        """
-        """
         result = y-soft
 
         return result
