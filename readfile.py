@@ -1,7 +1,7 @@
 from scipy.io import loadmat
 import numpy as np
 import pickle
-
+import os
 def getImageInfo(filepath):
 
     images = loadmat(filepath)
@@ -26,19 +26,19 @@ def getImageInfo(filepath):
     return imagelist,labellist
 
 
-def getPikle(l,n,active):
-    if l != 0 :
-        with open(active+"_"+str(l)+"layer_"+str(n)+"node"+".pkl", "rb") as inp:
-            NN = pickle.load(inp)
-    else:
-        with open(active+"_singlelayer.pkl", "rb") as inp:
-            NN = pickle.load(inp)
+def getPikle(path):
+    with open(path+".pkl", "rb") as inp:
+        NN = pickle.load(inp)
     return NN
 
-def setPikle(NN,activation):
-    if NN.layersize !=0:
-        with open(activation+"_"+str(NN.layersize)+"layer_"+str(NN.hiddenSize)+"node"+".pkl", "wb") as out:
-            pickle.dump(NN, out, pickle.HIGHEST_PROTOCOL)
-    else:
-        with open(activation+"_singlelayer.pkl", "wb") as out:
-            pickle.dump(NN, out, pickle.HIGHEST_PROTOCOL)
+def setPikle(NN,path):
+
+    with open(path+".pkl", "wb") as out:
+        pickle.dump(NN, out, pickle.HIGHEST_PROTOCOL)
+
+def createFolder(directory):
+    try:
+        if not os.path.exists(directory):
+            os.makedirs(directory)
+    except OSError:
+        print('Error: Creating directory. ' + directory)

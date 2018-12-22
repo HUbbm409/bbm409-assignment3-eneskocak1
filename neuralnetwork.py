@@ -25,19 +25,19 @@ class Neural_Network(object):
         for i in range(self.layersize+1):
             if i ==0:
                 if layersize !=0:
-                    self.W.append(np.random.random([self.inputSize, self.hiddenSize])-0.5)# (3x2) weight matrix from input to hidden layer
+                    self.W.append(2*np.random.random([self.inputSize, self.hiddenSize])-1)# (3x2) weight matrix from input to hidden layer
                     self.B.append(np.ones((1,self.hiddenSize)))
 
                 else:
-                    self.W.append(np.random.random([self.inputSize,
-                                                  self.outputSize])-0.5)  # (3x2) weight matrix from input to hidden layer
+                    self.W.append(2*np.random.random([self.inputSize,
+                                                  self.outputSize])-1)  # (3x2) weight matrix from input to hidden layer
                     self.B.append(np.ones((1,self.outputSize)))
 
             elif i == layersize:
-                self.W.append(np.random.random([self.hiddenSize, self.outputSize])-0.5) # (3x1) weight matrix from hidden to output layer
+                self.W.append(2*np.random.random([self.hiddenSize, self.outputSize])-1) # (3x1) weight matrix from hidden to output layer
                 self.B.append(np.ones((1,self.outputSize)))
             else:
-                self.W.append(np.random.random([self.hiddenSize, self.hiddenSize])-0.5)
+                self.W.append(2*np.random.random([self.hiddenSize, self.hiddenSize])-1)
                 self.B.append(np.ones((1,self.hiddenSize)))
 
     def forward(self, X):
@@ -50,9 +50,8 @@ class Neural_Network(object):
 
             self.z = self.z.dot(self.W[i])
             self.z+= self.B[i]
-
             self.z = self.activationfunc(self.z)
-            self.outsa.append(self.z)# activation function
+            self.outsa.append(self.z)
         outsoft = self.softmax(self.z)
 
         return outsoft
@@ -101,16 +100,12 @@ class Neural_Network(object):
 
         if batchsize == self.batch :
             self.batcherror /= batchsize
-
             self.backward(self.batcherror,rate)
-
-
             self.batch=0
             self.batcherror[:]=0
 
 
         return output,loss
-
 
 
     def cross_entropy(self,out,y):
