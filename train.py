@@ -74,7 +74,7 @@ def train(epoch=100,filetype =None,labeltype= None,pickle = False ,lsize = 0,nod
     else:
         layer = "[Activation: " + activation + " , Learnin rate: " + str(alpha) + ", Multilayer(" + str(
             lsize) + "layer," + str(nodsize) + "node) ]"
-    modelpath = "models/" + batchtype + layer
+    modelpath = "models/" + "your_trained_model"
 
     if pickle == True:
         NN=getPikle(modelpath)
