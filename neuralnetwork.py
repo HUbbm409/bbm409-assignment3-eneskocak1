@@ -25,16 +25,16 @@ class Neural_Network(object):
         for i in range(self.layersize+1):
             if i ==0:
                 if layersize !=0:
-                    self.W.append(2*np.random.random([self.inputSize, self.hiddenSize])-1)# (3x2) weight matrix from input to hidden layer
+                    self.W.append(2*np.random.random([self.inputSize, self.hiddenSize])-1)
                     self.B.append(np.ones((1,self.hiddenSize)))
 
                 else:
                     self.W.append(2*np.random.random([self.inputSize,
-                                                  self.outputSize])-1)  # (3x2) weight matrix from input to hidden layer
+                                                  self.outputSize])-1)
                     self.B.append(np.ones((1,self.outputSize)))
 
             elif i == layersize:
-                self.W.append(2*np.random.random([self.hiddenSize, self.outputSize])-1) # (3x1) weight matrix from hidden to output layer
+                self.W.append(2*np.random.random([self.hiddenSize, self.outputSize])-1)
                 self.B.append(np.ones((1,self.outputSize)))
             else:
                 self.W.append(2*np.random.random([self.hiddenSize, self.hiddenSize])-1)
